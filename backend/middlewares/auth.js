@@ -8,7 +8,7 @@ export const isAuthenticated = catchAsyncError(async (req, res, next) => {
   if (!token) {
     return next(new ErrorHandler("User Not Authorized", 401));
   }
-  const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+  const decoded = jwt.verify(token, process.env.SECRET);
 
   req.user = await User.findById(decoded.id);
 
