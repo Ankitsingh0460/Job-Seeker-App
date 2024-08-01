@@ -46,7 +46,7 @@ export const signIn = catchAsyncError(async (req, res, next) => {
 export const logout = catchAsyncError(async (req, res, next) => {
   res
     .status(201)
-    .cookie("uid", " ", {
+    .cookie("token", "", {
       httpOnly: true,
       expires: new Date(Date.now()),
     })
