@@ -3,38 +3,42 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Please provide your Name"],
-    minLength: [3, "Name must contain at leat 3 charecter"],
-    maxLength: [30, "Name cannot exceed more than 30 charecter"],
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Please provide your Name"],
+      minLength: [3, "Name must contain at leat 3 charecter"],
+      maxLength: [30, "Name cannot exceed more than 30 charecter"],
+    },
+    email: {
+      type: String,
+      required: [true, "Please provide Email"],
+      validate: [validator.isEmail, "Please provide a valid Email"],
+    },
+    phone: {
+      type: Number,
+      required: [true, "Please provide the valid phone number"],
+    },
+    password: {
+      type: String,
+      required: [true, "Please prove a poassword"],
+      minLength: [3, "Name must contain at leat 3 charecter"],
+      maxLength: [30, "Name cannot exceed more than 30 charecter"],
+      select: false,
+    },
+    role: {
+      type: String,
+      required: [true, "Please provide your role"],
+      enum: ["Job Seeker", "Employer"],
+    },
+    createdAt: {
+      type: String,
+      default: Date.now,
+    },
   },
-  email: {
-    type: String,
-    required: [true, "Please provide Email"],
-    validate: [validator.isEmail, "Please provide a valid Email"],
-  },
-  phone: {
-    type: Number,
-    required: [true, "Please provide the valid phone number"],
-  },
-  password: {
-    type: String,
-    required: [true, "Please prove a poassword"],
-    minLength: [3, "Name must contain at leat 3 charecter"],
-    maxLength: [30, "Name cannot exceed more than 30 charecter"],
-  },
-  role: {
-    type: String,
-    required: [true, "Please provide your role"],
-    enum: ["Job Seeker", "Employer"],
-  },
-  createdAt: {
-    type: String,
-    default: Date.now,
-  },
-});
+  { timestamps: true }
+);
 
 //Hassing password
 
@@ -55,8 +59,7 @@ userSchema.methods.comparepassword = async function (enterpassword) {
 
 userSchema.methods.getToken = function () {
   return jwt.sign({ id: this._id }, process.env.SECRET, {
-    expiresIn: process.env,
-    EXPIRE_JWT,
+    expiresIn: process.env.EXPIRE_JWT,
   });
 };
 
