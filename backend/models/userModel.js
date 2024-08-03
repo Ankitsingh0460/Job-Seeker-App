@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
       required: [true, "Please prove a poassword"],
       minLength: [3, "Name must contain at leat 3 charecter"],
       maxLength: [30, "Name cannot exceed more than 30 charecter"],
-      select: false,
+      select: true,
     },
     role: {
       type: String,
