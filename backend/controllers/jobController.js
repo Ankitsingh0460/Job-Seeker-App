@@ -99,6 +99,7 @@ export const updateJob = catchAsyncError(async (req, res, next) => {
   });
   res.status(201).json({
     success: true,
+    job,
     message: "Job Updated",
   });
 });
@@ -110,8 +111,24 @@ export const deletejob = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("OOPS Job is not found", 404));
   }
   await job.deleteOne();
-  req.status(200).json({
+  res.status(200).json({
     success: true,
     message: "Job Deleted",
   });
+});
+
+export const getSingleJob = catchAsyncError(async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const job = await Job.findById(id);
+    if (!job) {
+      return next(new ErrorHandler("Job Not Found", 400));
+    }
+    res.status(200).json({
+      job,
+      success: true,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(`Invalid ID / CastError`, 404));
+  }
 });
