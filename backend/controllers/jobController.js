@@ -91,7 +91,7 @@ export const updateJob = catchAsyncError(async (req, res, next) => {
     );
   }
 
-  const id = req.params;
+  const { id } = req.params;
   let job = await Job.findByIdAndUpdate(id, req.body, {
     new: true,
     runValidators: true,
